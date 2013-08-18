@@ -32,6 +32,9 @@ public class CraftWorkbench extends BaseObjective implements ICraftItem
 	public void OnCraftItem(RunsafeCraftItemEvent event)
 	{
 		RunsafePlayer player = event.getWhoClicked();
+
+		player.sendColouredMessage(handler.playerInEligibleWorld(player) ? "Is in world" : "Not in world");
+
 		if (handler.playerInEligibleWorld(player) && event.getCurrentItem().is(Item.Decoration.Workbench))
 			this.award(player);
 	}

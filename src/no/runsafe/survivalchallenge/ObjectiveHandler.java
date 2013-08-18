@@ -20,10 +20,8 @@ public class ObjectiveHandler implements IConfigurationChanged
 	public void awardPlayerObjective(RunsafePlayer player, IObjective objective)
 	{
 		Objective objectiveID = objective.getObjective();
-		player.sendColouredMessage("Objective flagged..");
 		if (!playerHasCompletedObjective(player, objectiveID))
 		{
-			player.sendColouredMessage("Objective not there to being with!");
 			this.database.flagObjectiveComplete(player, objectiveID); // Persist in the DB.
 
 			String playerName = player.getName();
