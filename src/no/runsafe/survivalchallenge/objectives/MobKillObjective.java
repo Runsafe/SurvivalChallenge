@@ -2,6 +2,7 @@ package no.runsafe.survivalchallenge.objectives;
 
 import no.runsafe.framework.api.event.entity.IEntityDeathEvent;
 import no.runsafe.framework.api.minecraft.RunsafeEntityType;
+import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.entity.RunsafeProjectile;
 import no.runsafe.framework.minecraft.event.entity.RunsafeEntityDamageByEntityEvent;
@@ -27,6 +28,7 @@ public abstract class MobKillObjective extends BaseObjective implements IEntityD
 			{
 				RunsafeEntityDamageByEntityEvent damageEvent = (RunsafeEntityDamageByEntityEvent) entity.getLastDamageCause();
 				RunsafeEntity attacker = damageEvent.getDamageActor();
+				RunsafeServer.Instance.broadcastMessage(attacker.getEntityType().getName());
 
 				if (attacker instanceof RunsafePlayer)
 				{
