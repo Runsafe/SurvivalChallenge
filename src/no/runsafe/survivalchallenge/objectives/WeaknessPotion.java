@@ -36,7 +36,7 @@ public class WeaknessPotion extends BaseObjective implements IInventoryClick
 		if (handler.entityInEligibleWorld(player) && event.getInventory().getType() == RunsafeInventoryType.BREWING)
 		{
 			RunsafeMeta item = event.getCurrentItem();
-			if (item.is(Item.Brewing.Potion) && item.getDurability() == 8200)
+			if (item != null && item.is(Item.Brewing.Potion) && item.getDurability() == 8200)
 				award(player);
 		}
 	}
