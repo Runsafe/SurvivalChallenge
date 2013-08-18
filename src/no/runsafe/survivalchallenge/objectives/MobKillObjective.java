@@ -24,7 +24,7 @@ public abstract class MobKillObjective extends BaseObjective implements IEntityD
 		RunsafeEntity entity = event.getEntity();
 		if (entityType != null && entity.getEntityType() == entityType && handler.entityInEligibleWorld(entity))
 		{
-			RunsafeServer.Instance.broadcastMessage("Entity type matched and we are in correct world.");
+			RunsafeServer.Instance.broadcastMessage(entity.getLastDamageCause().getClass().getName());
 			if (entity.getLastDamageCause() instanceof RunsafeEntityDamageByEntityEvent)
 			{
 				RunsafeEntityDamageByEntityEvent damageEvent = (RunsafeEntityDamageByEntityEvent) entity.getLastDamageCause();
