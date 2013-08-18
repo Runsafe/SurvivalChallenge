@@ -15,7 +15,6 @@ public class Diamonds extends BaseObjective implements IPlayerPickupItemEvent
 	public Diamonds(ObjectiveHandler handler)
 	{
 		super(handler);
-		this.handler = handler;
 	}
 
 	@Override
@@ -34,7 +33,7 @@ public class Diamonds extends BaseObjective implements IPlayerPickupItemEvent
 	public void OnPlayerPickupItemEvent(RunsafePlayerPickupItemEvent event)
 	{
 		RunsafePlayer player = event.getPlayer();
-		if (handler.playerInEligibleWorld(player))
+		if (handler.entityInEligibleWorld(player))
 		{
 			RunsafeMeta item = event.getItem().getItemStack();
 			RunsafeInventory inventory = player.getInventory();
@@ -45,6 +44,4 @@ public class Diamonds extends BaseObjective implements IPlayerPickupItemEvent
 				this.award(player);
 		}
 	}
-
-	private ObjectiveHandler handler;
 }

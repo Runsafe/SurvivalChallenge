@@ -15,5 +15,5 @@ public abstract class BaseObjective implements IObjective
 		this.handler.awardPlayerObjective(player, this);
 	}
 
-	private ObjectiveHandler handler;
+	protected ObjectiveHandler handler;
 }

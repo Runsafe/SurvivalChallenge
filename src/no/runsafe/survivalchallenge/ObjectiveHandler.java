@@ -3,6 +3,7 @@ package no.runsafe.survivalchallenge;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeWorld;
+import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
 import no.runsafe.survivalchallenge.database.ObjectiveRepository;
 
@@ -33,10 +34,10 @@ public class ObjectiveHandler implements IConfigurationChanged
 		}
 	}
 
-	public boolean playerInEligibleWorld(RunsafePlayer player)
+	public boolean entityInEligibleWorld(RunsafeEntity entity)
 	{
-		RunsafeWorld playerWorld = player.getWorld();
-		return playerWorld != null && playerWorld.getName().equalsIgnoreCase(challengeWorld);
+		RunsafeWorld world = entity.getWorld();
+		return world != null && world.getName().equalsIgnoreCase(challengeWorld);
 	}
 
 	public boolean playerHasCompletedObjective(RunsafePlayer player, Objective objective)

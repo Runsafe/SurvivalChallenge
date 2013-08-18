@@ -13,7 +13,6 @@ public class VillagerTrade extends BaseObjective implements IInventoryClick
 	public VillagerTrade(ObjectiveHandler handler)
 	{
 		super(handler);
-		this.handler = handler;
 	}
 
 	@Override
@@ -32,9 +31,7 @@ public class VillagerTrade extends BaseObjective implements IInventoryClick
 	public void OnInventoryClickEvent(RunsafeInventoryClickEvent event)
 	{
 		RunsafePlayer player = event.getWhoClicked();
-		if (handler.playerInEligibleWorld(player) && event.getInventory().getType() == RunsafeInventoryType.MERCHANT)
+		if (handler.entityInEligibleWorld(player) && event.getInventory().getType() == RunsafeInventoryType.MERCHANT)
 			this.award(player);
 	}
-
-	private ObjectiveHandler handler;
 }
