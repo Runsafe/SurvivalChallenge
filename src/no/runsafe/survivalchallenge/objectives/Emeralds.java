@@ -9,8 +9,7 @@ public class Emeralds extends ItemCollectObjective
 	public Emeralds(ObjectiveHandler handler)
 	{
 		super(handler);
-		itemType = Item.Materials.Emerald;
-		itemAmount = 5;
+		requiredItems.put(Item.Materials.Emerald, 5);
 	}
 
 	@Override

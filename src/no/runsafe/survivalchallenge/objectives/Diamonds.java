@@ -9,8 +9,7 @@ public class Diamonds extends ItemCollectObjective
 	public Diamonds(ObjectiveHandler handler)
 	{
 		super(handler);
-		itemType = Item.Materials.Diamond;
-		itemAmount = 30;
+		requiredItems.put(Item.Materials.Diamond, 30);
 	}
 
 	@Override
