@@ -52,13 +52,13 @@ public class ChallengeHandler implements IConfigurationChanged, IPlayerInteractE
 
 							// Create a pretty explosion.
 							if (playerWorld != null)
-								playerWorld.createExplosion(player.getLocation(), 3, false, false);
+								playerWorld.createExplosion(player.getLocation(), 0, false, false);
 
 							player.teleport(entryLocation); // Teleport the player.
 							player.setVelocity(new Vector(0, 0, 0)); // Prevent splat.
 							new CustomEvent(player, "achievement.survivalChallenge").Fire(); // Achievement!
 						}
-					}, 3);
+					}, 2);
 				}
 			}
 		}
