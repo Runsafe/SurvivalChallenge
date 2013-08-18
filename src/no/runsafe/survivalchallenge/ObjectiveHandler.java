@@ -23,6 +23,7 @@ public class ObjectiveHandler implements IConfigurationChanged
 
 		if (!playerHasCompletedObjective(player, objectiveID))
 		{
+			player.sendColouredMessage("Has not completed");
 			this.database.flagObjectiveComplete(player, objectiveID); // Persist in the DB.
 
 			String playerName = player.getName();
