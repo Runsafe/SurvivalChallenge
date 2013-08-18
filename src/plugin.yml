@@ -1,10 +1,5 @@
 name: SurvivalChallenge
 main: no.runsafe.survivalchallenge.Plugin
 version: 1.0.@BUILD@
-authors: []
-depend: []
-description:
-commands:
-  something:
-    description:
-    aliases: []
+author: Kruithne
+description: Survival Challenge event for Runsafe.
