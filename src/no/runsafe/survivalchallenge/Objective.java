@@ -2,5 +2,8 @@ package no.runsafe.survivalchallenge;
 
 public enum Objective
 {
-	CRAFT_WORKBENCH
+	CRAFT_WORKBENCH,
+	DIAMONDS,
+	EMERALDS,
+	VIlLAGER_TRADE
 }

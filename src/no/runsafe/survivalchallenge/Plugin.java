@@ -3,6 +3,9 @@ package no.runsafe.survivalchallenge;
 import no.runsafe.framework.RunsafeConfigurablePlugin;
 import no.runsafe.survivalchallenge.database.ObjectiveRepository;
 import no.runsafe.survivalchallenge.objectives.CraftWorkbench;
+import no.runsafe.survivalchallenge.objectives.Diamonds;
+import no.runsafe.survivalchallenge.objectives.Emeralds;
+import no.runsafe.survivalchallenge.objectives.VillagerTrade;
 
 public class Plugin extends RunsafeConfigurablePlugin
 {
@@ -10,10 +13,13 @@ public class Plugin extends RunsafeConfigurablePlugin
 	protected void PluginSetup()
 	{
 		// Core
-		this.addComponent(ObjectiveRepository.class);
-		this.addComponent(ObjectiveHandler.class);
+		addComponent(ObjectiveRepository.class);
+		addComponent(ObjectiveHandler.class);
 
 		// Objectives
-		this.addComponent(CraftWorkbench.class);
+		addComponent(CraftWorkbench.class);
+		addComponent(Diamonds.class);
+		addComponent(Emeralds.class);
+		addComponent(VillagerTrade.class);
 	}
 }
