@@ -34,14 +34,18 @@ public class ChallengeHandler implements IConfigurationChanged, IPlayerInteractE
 			return;
 
 		final RunsafePlayer player = event.getPlayer();
+		player.sendColouredMessage("Event detected");
 		if (!finished)
 		{
+			player.sendColouredMessage("Challenge not finished");
 			RunsafeBlock block = event.getBlock();
 			if (block != null && block.is(Item.Redstone.PressurePlate.Stone))
 			{
+				player.sendColouredMessage("Stone pad");
 				RunsafeLocation padLocation = block.getLocation();
 				if (padLocation.distance(entryPad) < 1)
 				{
+					player.sendColouredMessage("In-range");
 					player.setVelocity(new Vector(0, 3, 0)); // Throw the bugger in the air.
 
 					// Three seconds later we should then port the player inside.
