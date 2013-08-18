@@ -12,7 +12,7 @@ public abstract class BaseObjective implements IObjective
 	@Override
 	public void award(RunsafePlayer player)
 	{
-		this.handler.awardPlayerObjective(player, this.getObjective());
+		this.handler.awardPlayerObjective(player, this);
 	}
 
 	private ObjectiveHandler handler;
