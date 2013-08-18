@@ -11,6 +11,9 @@ public class ObjectiveChecker
 
 	public static boolean hasCompletedAllObjectives(List<Integer> data)
 	{
+		if (ObjectiveChecker.objectives == null)
+			return false;
+
 		for (IObjective objective : ObjectiveChecker.objectives) // Check every objective.
 			if (!data.contains((Object) objective.getObjective().ordinal()))
 				return false;

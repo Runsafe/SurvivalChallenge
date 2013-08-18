@@ -1,6 +1,7 @@
 package no.runsafe.survivalchallenge;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ObjectiveHandler implements IConfigurationChanged
+public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 {
 	public ObjectiveHandler(ObjectiveRepository database, ChallengeHandler handler)
 	{
@@ -84,7 +85,11 @@ public class ObjectiveHandler implements IConfigurationChanged
 	{
 		this.data = this.database.getStoredData(); // Load stored data from the database.
 		this.challengeWorld = configuration.getConfigValueAsString("challengeLocation.world"); // Get the world for the event.
+	}
 
+	@Override
+	public void OnServerReady()
+	{
 		// Let's check to see if we need to close the event already.
 		for (String playerName : data.keySet())
 			checkProgress(RunsafeServer.Instance.getPlayerExact(playerName));
