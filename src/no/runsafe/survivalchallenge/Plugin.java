@@ -31,5 +31,6 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(TameSomething.class);
 		addComponent(CreeperSnipe.class);
 		addComponent(SnowballSquid.class);
+		addComponent(Fish.class);
 	}
 }

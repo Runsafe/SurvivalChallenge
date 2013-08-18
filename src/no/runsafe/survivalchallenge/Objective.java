@@ -19,4 +19,5 @@ public enum Objective
 	TAME_SOMETHING,
 	CREEPER_SNIPE,
 	SNOWBALL_AT_SQUID,
+	FISH
 }
