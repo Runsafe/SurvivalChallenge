@@ -14,10 +14,9 @@ import java.util.List;
 
 public class ObjectiveHandler implements IConfigurationChanged
 {
-	public ObjectiveHandler(ObjectiveRepository database, IObjective[] objectives, ChallengeHandler handler, ObjectiveChecker checker)
+	public ObjectiveHandler(ObjectiveRepository database, ChallengeHandler handler, ObjectiveChecker checker)
 	{
 		this.database = database;
-		this.objectives = objectives;
 		this.handler = handler;
 		this.checker = checker;
 	}
@@ -95,7 +94,6 @@ public class ObjectiveHandler implements IConfigurationChanged
 	private HashMap<String, List<Integer>> data = new HashMap<String, List<Integer>>();
 	private ObjectiveRepository database;
 	private String challengeWorld;
-	private IObjective[] objectives;
 	private ChallengeHandler handler;
 	private ObjectiveChecker checker;
 }
