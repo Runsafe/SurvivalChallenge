@@ -1,17 +1,15 @@
 package no.runsafe.survivalchallenge;
 
-import no.runsafe.framework.minecraft.player.RunsafePlayer;
-
 import java.util.List;
 
 public class ObjectiveChecker
 {
 	public ObjectiveChecker(IObjective[] objectives)
 	{
-		this.objectives = objectives;
+		ObjectiveChecker.objectives = objectives;
 	}
 
-	public boolean hasCompletedAllObjectives(List<Integer> data)
+	public static boolean hasCompletedAllObjectives(List<Integer> data)
 	{
 		for (IObjective objective : objectives) // Check every objective.
 			if (!data.contains((Object) objective.getObjective().ordinal()))
@@ -20,5 +18,5 @@ public class ObjectiveChecker
 		return true;
 	}
 
-	private IObjective[] objectives;
+	private static IObjective[] objectives;
 }

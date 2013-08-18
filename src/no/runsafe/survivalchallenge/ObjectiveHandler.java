@@ -14,11 +14,10 @@ import java.util.List;
 
 public class ObjectiveHandler implements IConfigurationChanged
 {
-	public ObjectiveHandler(ObjectiveRepository database, ChallengeHandler handler, ObjectiveChecker checker)
+	public ObjectiveHandler(ObjectiveRepository database, ChallengeHandler handler)
 	{
 		this.database = database;
 		this.handler = handler;
-		this.checker = checker;
 	}
 
 	public void awardPlayerObjective(RunsafePlayer player, IObjective objective)
@@ -50,7 +49,7 @@ public class ObjectiveHandler implements IConfigurationChanged
 	{
 		String playerName = player.getName();
 		if (data.containsKey(playerName))
-			if (!checker.hasCompletedAllObjectives(data.get(playerName)))
+			if (!ObjectiveChecker.hasCompletedAllObjectives(data.get(playerName)))
 				return;
 
 
@@ -95,5 +94,4 @@ public class ObjectiveHandler implements IConfigurationChanged
 	private ObjectiveRepository database;
 	private String challengeWorld;
 	private ChallengeHandler handler;
-	private ObjectiveChecker checker;
 }
