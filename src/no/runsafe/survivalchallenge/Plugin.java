@@ -29,5 +29,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(DiamondArmour.class);
 		addComponent(EnchantItem.class);
 		addComponent(TameSomething.class);
+		addComponent(CreeperSnipe.class);
+		addComponent(SnowballSquid.class);
 	}
 }
