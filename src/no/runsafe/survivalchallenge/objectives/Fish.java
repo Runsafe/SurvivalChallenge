@@ -28,6 +28,7 @@ public class Fish extends BaseObjective implements IPlayerFishEvent
 	@Override
 	public void OnPlayerFish(RunsafePlayerFishEvent event)
 	{
-		award(event.getPlayer());
+		if (event.getCaught() != null)
+			award(event.getPlayer());
 	}
 }
