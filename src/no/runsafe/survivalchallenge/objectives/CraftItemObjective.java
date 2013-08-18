@@ -22,7 +22,7 @@ public abstract class CraftItemObjective extends BaseObjective implements ICraft
 		if (handler.entityInEligibleWorld(player))
 		{
 			RunsafeMeta item = event.getCurrentItem();
-			if ((item.is(this.item) && data == -1 || item.getDurability() == data))
+			if (item != null && (item.is(this.item) && data == -1 || item.getDurability() == data))
 				this.award(player);
 		}
 	}
