@@ -2,6 +2,7 @@ package no.runsafe.survivalchallenge;
 
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
+import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.entity.RunsafeEntity;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
@@ -13,13 +14,22 @@ import java.util.List;
 
 public class ObjectiveHandler implements IConfigurationChanged
 {
-	public ObjectiveHandler(ObjectiveRepository database)
+	public ObjectiveHandler(ObjectiveRepository database, IObjective[] objectives, ChallengeHandler handler)
 	{
 		this.database = database;
+		this.objectives = objectives;
+		this.handler = handler;
 	}
 
 	public void awardPlayerObjective(RunsafePlayer player, IObjective objective)
 	{
+		if (handler.isFinished())
+		{
+			player.sendColouredMessage("&cThe event has already finished!");
+			handler.removePlayer(player);
+			return;
+		}
+
 		Objective objectiveID = objective.getObjective();
 		if (!playerHasCompletedObjective(player, objectiveID))
 		{
@@ -31,7 +41,34 @@ public class ObjectiveHandler implements IConfigurationChanged
 
 			this.data.get(playerName).add(objectiveID.ordinal()); // Flag the objective as complete.
 			player.sendColouredMessage("&eObjective complete: &f%s&e.", objective.getObjectiveTitle());
+
+			checkProgress(player); // Check the players progress thus far.
 		}
+	}
+
+	public void checkProgress(RunsafePlayer player)
+	{
+		String playerName = player.getName();
+		if (data.containsKey(playerName))
+		{
+			List<Integer> playerObjectives = data.get(playerName);
+			for (IObjective objective : objectives) // Check every objective.
+				if (!playerObjectives.contains((Object) objective.getObjective().ordinal()))
+					return;
+		}
+
+		// If we're here, the player has won the challenge.
+		RunsafeWorld world = RunsafeServer.Instance.getWorld(challengeWorld);
+		if (world != null)
+			for (RunsafePlayer worldPlayer : world.getPlayers()) // Get every player in the world.
+				handler.removePlayer(worldPlayer); // Teleport the player away.
+
+		// Give the player the winning achievement.
+		new CustomEvent(player, "achievement.survivalChallengeWinner").Fire();
+
+		// Broadcast to the server.
+		RunsafeServer.Instance.broadcastMessage("&eThe Survival Challenge has been beaten by %s&e!", player.getPrettyName());
+		handler.closeEvent(); // Close the event to prevent further people entering.
 	}
 
 	public boolean entityInEligibleWorld(RunsafeEntity entity)
@@ -50,10 +87,16 @@ public class ObjectiveHandler implements IConfigurationChanged
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
 		this.data = this.database.getStoredData(); // Load stored data from the database.
-		this.challengeWorld = configuration.getConfigValueAsString("challengeWorld"); // Get the world for the event.
+		this.challengeWorld = configuration.getConfigValueAsString("challengeLocation.world"); // Get the world for the event.
+
+		// Let's check to see if we need to close the event already.
+		for (String playerName : data.keySet())
+			checkProgress(RunsafeServer.Instance.getPlayerExact(playerName));
 	}
 
 	private HashMap<String, List<Integer>> data = new HashMap<String, List<Integer>>();
 	private ObjectiveRepository database;
 	private String challengeWorld;
+	private IObjective[] objectives;
+	private ChallengeHandler handler;
 }

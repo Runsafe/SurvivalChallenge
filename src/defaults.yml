@@ -1,1 +1,15 @@
-challengeWorld: survivalchallenge
+challengeLocation:
+  world: survivalchallenge
+  x: -268
+  y: 64
+  z: 226
+finishLocation:
+  world: test
+  x: -658
+  y: 62
+  z: 1046
+entryPad:
+  world: test
+  x: -652
+  y: 63
+  z: 1052

@@ -11,6 +11,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 	{
 		// Core
 		addComponent(ObjectiveRepository.class);
+		addComponent(ChallengeHandler.class);
 		addComponent(ObjectiveHandler.class);
 
 		// Objectives
