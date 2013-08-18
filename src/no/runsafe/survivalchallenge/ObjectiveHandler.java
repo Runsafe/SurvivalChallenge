@@ -36,7 +36,7 @@ public class ObjectiveHandler implements IConfigurationChanged
 	public boolean playerInEligibleWorld(RunsafePlayer player)
 	{
 		RunsafeWorld playerWorld = player.getWorld();
-		return (playerWorld != null && playerWorld.getName().equalsIgnoreCase(challengeWorld)); // Do the worlds match?
+		return playerWorld.getName().equalsIgnoreCase(challengeWorld);
 	}
 
 	public boolean playerHasCompletedObjective(RunsafePlayer player, Objective objective)
