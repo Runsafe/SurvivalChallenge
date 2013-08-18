@@ -14,11 +14,12 @@ import java.util.List;
 
 public class ObjectiveHandler implements IConfigurationChanged
 {
-	public ObjectiveHandler(ObjectiveRepository database, IObjective[] objectives, ChallengeHandler handler)
+	public ObjectiveHandler(ObjectiveRepository database, IObjective[] objectives, ChallengeHandler handler, ObjectiveChecker checker)
 	{
 		this.database = database;
 		this.objectives = objectives;
 		this.handler = handler;
+		this.checker = checker;
 	}
 
 	public void awardPlayerObjective(RunsafePlayer player, IObjective objective)
@@ -50,12 +51,9 @@ public class ObjectiveHandler implements IConfigurationChanged
 	{
 		String playerName = player.getName();
 		if (data.containsKey(playerName))
-		{
-			List<Integer> playerObjectives = data.get(playerName);
-			for (IObjective objective : objectives) // Check every objective.
-				if (!playerObjectives.contains((Object) objective.getObjective().ordinal()))
-					return;
-		}
+			if (!checker.hasCompletedAllObjectives(data.get(playerName)))
+				return;
+
 
 		// If we're here, the player has won the challenge.
 		RunsafeWorld world = RunsafeServer.Instance.getWorld(challengeWorld);
@@ -99,4 +97,5 @@ public class ObjectiveHandler implements IConfigurationChanged
 	private String challengeWorld;
 	private IObjective[] objectives;
 	private ChallengeHandler handler;
+	private ObjectiveChecker checker;
 }

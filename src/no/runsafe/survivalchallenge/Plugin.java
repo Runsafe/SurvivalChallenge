@@ -10,6 +10,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 	protected void PluginSetup()
 	{
 		// Core
+		addComponent(ObjectiveChecker.class);
 		addComponent(ObjectiveRepository.class);
 		addComponent(ChallengeHandler.class);
 		addComponent(ObjectiveHandler.class);
