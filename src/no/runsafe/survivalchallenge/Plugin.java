@@ -26,5 +26,7 @@ public class Plugin extends RunsafeConfigurablePlugin
 		addComponent(SlimeKill.class);
 		addComponent(EndermanKill.class);
 		addComponent(SpiderKill.class);
+		addComponent(DiamondArmour.class);
+		addComponent(EnchantItem.class);
 	}
 }
