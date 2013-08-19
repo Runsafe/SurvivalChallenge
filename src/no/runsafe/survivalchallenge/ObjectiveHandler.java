@@ -1,6 +1,7 @@
 package no.runsafe.survivalchallenge;
 
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.IServerReady;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeServer;
@@ -15,16 +16,22 @@ import java.util.List;
 
 public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 {
-	public ObjectiveHandler(ObjectiveRepository database, ChallengeHandler handler)
+	public ObjectiveHandler(ObjectiveRepository database, ChallengeHandler handler, IOutput output)
 	{
 		this.database = database;
 		this.handler = handler;
+		this.output = output;
 	}
 
 	public void awardPlayerObjective(RunsafePlayer player, IObjective objective)
 	{
+		String playerName = player.getName();
+		String objectiveName = objective.getObjectiveTitle();
+		output.fine("%s: Just completed objective %s", playerName, objectiveName);
+
 		if (handler.isFinished())
 		{
+			output.fine("%s: The event is already over, unable to complete objective.", playerName);
 			player.sendColouredMessage("&cThe event has already finished!");
 			handler.removePlayer(player);
 			return;
@@ -33,9 +40,9 @@ public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 		Objective objectiveID = objective.getObjective();
 		if (!playerHasCompletedObjective(player, objectiveID))
 		{
+			output.fine("%s: Player has not completed the objective, flagging completion.", playerName);
 			this.database.flagObjectiveComplete(player, objectiveID); // Persist in the DB.
 
-			String playerName = player.getName();
 			if (!this.data.containsKey(playerName)) // If we don't already have a container for the player..
 				this.data.put(playerName, new ArrayList<Integer>()); // .. make one.
 
@@ -44,17 +51,28 @@ public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 
 			checkProgress(player); // Check the players progress thus far.
 		}
+		else
+		{
+			output.fine("%s: Player has already completed objective, not flagging.", playerName);
+		}
 	}
 
 	public void checkProgress(RunsafePlayer player)
 	{
 		String playerName = player.getName();
-		if (data.containsKey(playerName))
-			if (!ObjectiveChecker.hasCompletedAllObjectives(data.get(playerName)))
-				return;
+		output.fine("%s: Checking objective progress.");
 
+		if (data.containsKey(playerName))
+		{
+			if (!ObjectiveChecker.hasCompletedAllObjectives(data.get(playerName)))
+			{
+				output.fine("%s: Player has not completed all objectives yet.", playerName);
+				return;
+			}
+		}
 
 		// If we're here, the player has won the challenge.
+		output.fine("%s: Player has completed all achievements, marking as winner and closing event.", playerName);
 		RunsafeWorld world = RunsafeServer.Instance.getWorld(challengeWorld);
 		if (world != null)
 			for (RunsafePlayer worldPlayer : world.getPlayers()) // Get every player in the world.
@@ -99,4 +117,5 @@ public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 	private ObjectiveRepository database;
 	private String challengeWorld;
 	private ChallengeHandler handler;
+	private IOutput output;
 }
