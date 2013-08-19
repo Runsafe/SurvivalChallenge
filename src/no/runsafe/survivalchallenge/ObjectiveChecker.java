@@ -40,7 +40,7 @@ public class ObjectiveChecker implements IPlayerCustomEvent
 
 	private void output(String message, RunsafePlayer player)
 	{
-		output.fine("ObjectiveChecker: [%s] - %s", player.getName(), message);
+		output.fine("ObjectiveChecker: [%s] %s", player.getName(), message);
 	}
 
 	private IOutput output;
