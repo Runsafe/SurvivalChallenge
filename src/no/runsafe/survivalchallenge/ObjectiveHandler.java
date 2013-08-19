@@ -13,6 +13,7 @@ import no.runsafe.survivalchallenge.database.ObjectiveRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 {
@@ -49,41 +50,12 @@ public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 			this.data.get(playerName).add(objectiveID.ordinal()); // Flag the objective as complete.
 			player.sendColouredMessage("&eObjective complete: &f%s&e.", objective.getObjectiveTitle());
 
-			checkProgress(player); // Check the players progress thus far.
+			new ObjectiveCompleteEvent(player, data.get(playerName)).Fire();
 		}
 		else
 		{
 			output.fine("%s: Player has already completed objective, not flagging.", playerName);
 		}
-	}
-
-	public void checkProgress(RunsafePlayer player)
-	{
-		String playerName = player.getName();
-		output.fine("%s: Checking objective progress.", playerName);
-
-		if (data.containsKey(playerName))
-		{
-			if (!ObjectiveChecker.hasCompletedAllObjectives(data.get(playerName)))
-			{
-				output.fine("%s: Player has not completed all objectives yet.", playerName);
-				return;
-			}
-		}
-
-		// If we're here, the player has won the challenge.
-		output.fine("%s: Player has completed all achievements, marking as winner and closing event.", playerName);
-		RunsafeWorld world = RunsafeServer.Instance.getWorld(challengeWorld);
-		if (world != null)
-			for (RunsafePlayer worldPlayer : world.getPlayers()) // Get every player in the world.
-				handler.removePlayer(worldPlayer); // Teleport the player away.
-
-		// Give the player the winning achievement.
-		new CustomEvent(player, "achievement.survivalChallengeWinner").Fire();
-
-		// Broadcast to the server.
-		RunsafeServer.Instance.broadcastMessage("&eThe Survival Challenge has been beaten by %s&e!", player.getPrettyName());
-		handler.closeEvent(); // Close the event to prevent further people entering.
 	}
 
 	public boolean entityInEligibleWorld(RunsafeEntity entity)
@@ -108,9 +80,9 @@ public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 	@Override
 	public void OnServerReady()
 	{
-		// Let's check to see if we need to close the event already.
-		for (String playerName : data.keySet())
-			checkProgress(RunsafeServer.Instance.getPlayerExact(playerName));
+		// Fire a completion event for every player, this will shut the event if we're already done.
+		for (Map.Entry<String, List<Integer>> node : data.entrySet())
+			new ObjectiveCompleteEvent(RunsafeServer.Instance.getPlayerExact(node.getKey()), node.getValue()).Fire();
 	}
 
 	private HashMap<String, List<Integer>> data = new HashMap<String, List<Integer>>();

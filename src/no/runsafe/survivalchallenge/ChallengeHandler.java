@@ -6,6 +6,7 @@ import no.runsafe.framework.api.event.player.IPlayerInteractEvent;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.Item;
 import no.runsafe.framework.minecraft.RunsafeLocation;
+import no.runsafe.framework.minecraft.RunsafeServer;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.block.RunsafeBlock;
 import no.runsafe.framework.minecraft.event.player.RunsafePlayerInteractEvent;
@@ -77,6 +78,21 @@ public class ChallengeHandler implements IConfigurationChanged, IPlayerInteractE
 	public void closeEvent()
 	{
 		finished = true;
+	}
+
+	public void broadcastWinner(RunsafePlayer player)
+	{
+		for (RunsafePlayer worldPlayer : entryLocation.getWorld().getPlayers()) // Get every player in the world.
+			removePlayer(worldPlayer); // Teleport the player away.
+
+		// Broadcast to the server.
+		RunsafeServer.Instance.broadcastMessage("&eThe Survival Challenge has been beaten by %s&e!", player.getPrettyName());
+
+		// Give the player the winning achievement.
+		new CustomEvent(player, "achievement.survivalChallengeWinner").Fire();
+
+		// Close the event down.
+		closeEvent();
 	}
 
 	public boolean isFinished()

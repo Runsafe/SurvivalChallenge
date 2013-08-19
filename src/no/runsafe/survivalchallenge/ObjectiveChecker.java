@@ -1,37 +1,49 @@
 package no.runsafe.survivalchallenge;
 
 import no.runsafe.framework.api.IOutput;
+import no.runsafe.framework.api.event.player.IPlayerCustomEvent;
+import no.runsafe.framework.minecraft.event.player.RunsafeCustomEvent;
+import no.runsafe.framework.minecraft.player.RunsafePlayer;
 
 import java.util.List;
 
-public class ObjectiveChecker
+public class ObjectiveChecker implements IPlayerCustomEvent
 {
-	public ObjectiveChecker(IObjective[] objectives, IOutput output)
+	public ObjectiveChecker(IObjective[] objectives, IOutput output, ChallengeHandler handler)
 	{
-		ObjectiveChecker.objectives = objectives;
-		ObjectiveChecker.output = output;
+		this.objectives = objectives;
+		this.output = output;
+		this.handler = handler;
 	}
 
-	public static boolean hasCompletedAllObjectives(List<Integer> data)
+	@Override
+	public void OnPlayerCustomEvent(RunsafeCustomEvent event)
 	{
-		if (ObjectiveChecker.objectives == null)
+		if (event.getEvent().equals("survivalChallenge.objectiveComplete"))
 		{
-			ObjectiveChecker.output.fine("ObjectiveChecker: No objectives loaded.");
-			return false;
-		}
+			RunsafePlayer player = event.getPlayer();
+			List<Integer> progress = (List<Integer>) event.getData();
 
-		for (IObjective objective : ObjectiveChecker.objectives) // Check every objective.
-		{
-			if (!data.contains((Object) objective.getObjective().ordinal()))
+			output("Detected objective completion..", player);
+			for (IObjective requiredObjective : objectives)
 			{
-				ObjectiveChecker.output.fine("ObjectiveChecker: Objective not completed - %s", objective.getObjectiveTitle());
-				return false;
+				if (!progress.contains((Object) requiredObjective.getObjective().ordinal()))
+				{
+					output("Failed to meet required objective: " + requiredObjective.getObjectiveTitle(), player);
+					return;
+				}
 			}
+			output("No failed objectives, marking as the winner", player);
+			handler.broadcastWinner(player);
 		}
-
-		return true;
 	}
 
-	private static IObjective[] objectives;
-	private static IOutput output;
+	private void output(String message, RunsafePlayer player)
+	{
+		output.fine("ObjectiveChecker: [%s] - %s", player.getName(), message);
+	}
+
+	private IOutput output;
+	private IObjective[] objectives;
+	private ChallengeHandler handler;
 }
