@@ -1,15 +1,15 @@
 challengeLocation:
   world: survivalchallenge
-  x: -268
-  y: 64
-  z: 226
+  x: -22
+  y: 65
+  z: 243
 finishLocation:
-  world: test
-  x: -658
-  y: 62
-  z: 1046
+  world: spawn
+  x: 36
+  y: 23
+  z: -54
 entryPad:
-  world: test
+  world: spawn
   x: -652
   y: 63
   z: 1052
