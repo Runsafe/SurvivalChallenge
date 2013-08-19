@@ -60,7 +60,7 @@ public class ObjectiveHandler implements IConfigurationChanged, IServerReady
 	public void checkProgress(RunsafePlayer player)
 	{
 		String playerName = player.getName();
-		output.fine("%s: Checking objective progress.");
+		output.fine("%s: Checking objective progress.", playerName);
 
 		if (data.containsKey(playerName))
 		{
