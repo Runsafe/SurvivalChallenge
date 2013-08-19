@@ -31,7 +31,7 @@ public class VillagerTrade extends BaseObjective implements IInventoryClick
 	public void OnInventoryClickEvent(RunsafeInventoryClickEvent event)
 	{
 		RunsafePlayer player = event.getWhoClicked();
-		if (handler.entityInEligibleWorld(player) && event.getInventory().getType() == RunsafeInventoryType.MERCHANT)
+		if (handler.entityInEligibleWorld(player) && event.getInventory().getType() == RunsafeInventoryType.MERCHANT && event.getCurrentItem() != null)
 			this.award(player);
 	}
 }
