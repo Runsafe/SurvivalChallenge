@@ -35,13 +35,13 @@ public class ChallengeHandler implements IConfigurationChanged, IPlayerInteractE
 			return;
 
 		final RunsafePlayer player = event.getPlayer();
-		if (!finished)
+		RunsafeBlock block = event.getBlock();
+		if (block != null && block.is(Item.Redstone.PressurePlate.Stone))
 		{
-			RunsafeBlock block = event.getBlock();
-			if (block != null && block.is(Item.Redstone.PressurePlate.Stone))
+			RunsafeLocation padLocation = block.getLocation();
+			if (padLocation.distance(entryPad) < 1)
 			{
-				RunsafeLocation padLocation = block.getLocation();
-				if (padLocation.distance(entryPad) < 1)
+				if (!finished)
 				{
 					player.setVelocity(new Vector(0, 3, 0)); // Throw the bugger in the air.
 
@@ -61,12 +61,12 @@ public class ChallengeHandler implements IConfigurationChanged, IPlayerInteractE
 						}
 					}, 2);
 				}
+				else
+				{
+					// The event is over, send a sad message to make them cry.
+					player.sendColouredMessage("&cThe Survival Challenge has ended, sorry!");
+				}
 			}
-		}
-		else
-		{
-			// The event is over, send a sad message to make them cry.
-			player.sendColouredMessage("&cThe Survival Challenge has ended, sorry!");
 		}
 	}
 
