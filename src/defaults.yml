@@ -5,11 +5,11 @@ challengeLocation:
   z: 243
 finishLocation:
   world: spawn
+  x: 47.5
+  y: 22
+  z: -59.5
+entryPad:
+  world: spawn
   x: 36
   y: 23
   z: -54
-entryPad:
-  world: spawn
-  x: -652
-  y: 63
-  z: 1052

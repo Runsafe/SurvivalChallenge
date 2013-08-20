@@ -39,7 +39,7 @@ public class ChallengeHandler implements IConfigurationChanged, IPlayerInteractE
 		if (block != null && block.is(Item.Redstone.PressurePlate.Stone))
 		{
 			RunsafeLocation padLocation = block.getLocation();
-			if (padLocation.distance(entryPad) < 1)
+			if (padLocation.getWorld().getName().equals(entryPad.getWorld().getName()) && padLocation.distance(entryPad) < 1)
 			{
 				if (!finished)
 				{
